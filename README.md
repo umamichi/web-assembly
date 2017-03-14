@@ -1,5 +1,5 @@
 
-## WebAssemblyとは 
+## WebAssemblyとは？ 
 
 <img src="https://raw.githubusercontent.com/umamichi/web-assembly/master/images/wasm.png" width="500">
 
@@ -33,18 +33,36 @@
 asm.jsとは、JavaScriptを高速実行するために開発されたサブセット
 ※サブセットとは、全体に対する一部分のこと。本来の規格（JavaScript）に関する限定部分、あるいはソフトウエアの機能を限定して使えるようにしたもの
 
-asm.jsとは、JavaScriptをある制約に従って書くことで、
-**型を明確にして事前コンパイルできるようにする**技術です
+asm.jsとは、JavaScriptをある制約に従って書くことで、**型を明確にして事前コンパイルできるようにする**技術です
 
+▼ asm.jsの例
+```javascript
+function asm(stdin, foreign, heap){ //引数は最大3つ
+  // use asm宣言により,JavaScriptインタプリタはこのfunctionをasm.jsコードと解釈し, 事前コンパイルを試みます
+  "use asm"; 
+  // 共有変数宣言
+  var a = 0;
+  // 関数定義
+  function hoge(){
+    callOuter();
+  }
+  // 外部への公開
+  return stdin.hoge;
+}
+```
 
 👍 asm.jsの良いところ
-+ 実行速度が速くなる
-+ C/C++からJavaScriptへコンパイル可
++ 数値演算系の実行速度が速くなる（通常のJavascriptの6〜7割の速度）
++ asm.jsをサポートしない環境では通常のJavaScriptコードとして振舞う
++ 他言語（C/C++）からasm.jsコードを出力可
 + ゲームエンジンによるサポート(Unreal Engine, Unity)
+　→ UnityのコードをWebGLで動作させるときにasm.jsが使われている
 
 👎 asm.jsの悪いところ
 + ファイルサイズが増大&通信量増加
-+ ファイルサイズの増大によるパージング(構文解析)の時間増加 
+ → それによるパージング(構文解析)の時間増加 
++ データ構造の概念が存在しない
+ → 数値計算しかできない。オブジェクト指向的なアプローチが通用しない
 + Web API 呼び出しが得意ではない(外部からfunctionを渡す必要がある)
 
 
@@ -60,7 +78,6 @@ JavaScriptに比べてファイルサイズを大幅に小さくすることが�
 
 ## WebAssemblyのすごいところ✨
 
-+ バイナリコードにコンパイルされるから実行速度が速い (実行速度はasm.jsと同等)  
 + asm.jsに比べてファイルサイズが小さくなり、ロード時間が短くなる
 + GC（ガベージコレクション）, DOM, Web API操作が可能
 + 対応言語はC/C++, Rust（Mozillaによって開発されている）など
@@ -78,17 +95,6 @@ JavaScriptに比べてファイルサイズを大幅に小さくすることが�
 Chrome、Firefoxを中心にこれから開発が進んでいく模様  
 <img src="https://raw.githubusercontent.com/umamichi/web-assembly/master/images/caniuse.png?raw=true" width="100%">
 
-
-## wasmバイナリへコンパイルの流れ
-
-人間がwasmのバイナリを書くのは無理なので、
-何かしらの方法でソースコードから生成する必要があります。
-現状では前述のasm.jsと同様、オープンソースのコンパイラ基盤 LLVM を使います。
-
-<img>
-
-LLVMは、フロントエンドとバックエンドにコンパイラが分かれており、
-内部で中間表現(LLVM IR)に変換することで、指定の形式にコンパイルすることができます。
 
 ## C言語をWebAssembly対応ブラウザで動かしてみる
 
@@ -116,6 +122,8 @@ https://www.google.co.jp/chrome/browser/canary.html
 
 ### 4. https://umamichi.github.io/wasm/ にアクセスし、デペロッパーツールを開き、画面上のボタンをクリックする
 
+クリックする度にインクリメントされた数値がコンソールに出力されたら成功です
+
 ```::index.html
 <html>
 <head>
@@ -142,10 +150,10 @@ https://www.google.co.jp/chrome/browser/canary.html
 </html>
 ```
 
-**⚠️ 現段階では、wasmファイルをjavascriptで読み込むコードが必要**
+**現段階では、wasmファイルをJavaScriptで読み込むための処理が必要です**
 
 
-### 5. UnityでつくられたゲームをWebAssemblyで動かす
+### (おまけ) UnityでつくられたゲームをWebAssemblyで動かす
 
 <a href="https://webassembly.github.io/demo/AngryBots/" target="_blank">https://webassembly.github.io/demo/AngryBots/</a>
 <!-- <img src="https://raw.githubusercontent.com/umamichi/web-assembly/master/images/game.gif" width="500"> -->
@@ -154,13 +162,27 @@ https://www.google.co.jp/chrome/browser/canary.html
 
 ## C言語をWebAssembly用にバイナリコードにコンパイルしてみる
 
-**注意）3〜4時間かかります**
+
+**⚠️ 注意 3〜4時間かかります**
 
 ```
 環境　･･･　MacOS Yosemite 10.10.5
 必要な空き容量　･･･　18GB
 必要な時間　･･･ 3〜4時間ほど
 ```
+
+
+### WebAssemblyバイナリへコンパイルする流れ
+
+人間がwasmのバイナリを書くのは無理なので、
+何かしらの方法でソースコードから生成する必要があります。
+現状ではオープンソースのコンパイラ基盤 LLVM を使います。
+
+<img>
+
+LLVMは、フロントエンドとバックエンドにコンパイラが分かれており、
+内部で中間表現(LLVM IR)に変換することで、指定の形式にコンパイルすることができます。
+
 
 ### 1.LLVM+clang のインストール
 
@@ -272,9 +294,17 @@ $ s2wasm sample.s > sample.wast
 $ ../wabt/out/clang/Debug/no-tests/wast2wasm -o sample.wasm sample.wast
 ```
 
-sample.wast ファイルが生成されたらコンパイル成功です！
+sample.wast ファイルが生成されたらコンパイル成功！
 
 
+
+## WebAssemblyをいつ使うか
+
++ 部分的な処理の高速化
++ ブラウザゲームや、ブラウザ上でのVRやAR
++ ブラウザ上での画像処理/動画処理
++ ストリーミング配信
++ 他言語で書かれた既存プログラムの流用
 
 ## まとめ＆今後
 

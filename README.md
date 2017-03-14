@@ -7,12 +7,6 @@
 
 2015年6月、Mozilla、Google、Microsoft、Appleが標準フォーマットとして開発に合意した
 
-
-### Can I use Web Assembly?
-
-Chrome、Firefoxで開発が進んでいる模様
-<img src="https://raw.githubusercontent.com/umamichi/web-assembly/master/images/caniuse.png?raw=true" width="100%">
-
 ## WebAssemblyが生まれた経緯
 
 ### JavaScriptに実行速度が求められる時代になった
@@ -81,6 +75,12 @@ JavaScriptに比べてファイルサイズを大幅に小さくすることが�
 + DOMを操作する必要があり、DOMからは解放されない
 
 
+## Can I use Web Assembly?
+
+Chrome、Firefoxを中心にこれから開発が進んでいく模様  
+<img src="https://raw.githubusercontent.com/umamichi/web-assembly/master/images/caniuse.png?raw=true" width="100%">
+
+
 ## まとめ＆今後
 
 + WebAssemblyを使えば、何でも速くなるわけではない
@@ -132,8 +132,8 @@ https://www.google.co.jp/chrome/browser/canary.html
   .then(buffer => WebAssembly.compile(buffer))
   .then(module => {
     const instance = new WebAssembly.Instance(module);
-    console.log(instance);
     document.getElementById('countup').addEventListener('click', () => {
+      // C言語で定義されたcountを呼び出すことが可能
       this.value = instance.exports.count();
       console.log(this.value);
     }, false);
@@ -143,13 +143,13 @@ https://www.google.co.jp/chrome/browser/canary.html
 </html>
 ```
 
-**現段階では、wasmファイルをjavascriptで読み込むコードが必要**
+**⚠️ 現段階では、wasmファイルをjavascriptで読み込むコードが必要**
 
-### 5. UnityでつくったゲームをWebAssemblyで動かす
 
-<img gif>
+### 5. UnityでつくられたゲームをWebAssemblyで動かす
 
-http://〜
+<a href="https://webassembly.github.io/demo/AngryBots/" target="_blank">https://webassembly.github.io/demo/AngryBots/</a>
+<!-- <img src="https://raw.githubusercontent.com/umamichi/web-assembly/master/images/game.gif" width="500"> -->
 
 
 

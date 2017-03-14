@@ -1,7 +1,7 @@
 
 ## WebAssemblyとは 
 
-<img>
+<img src="https://raw.githubusercontent.com/umamichi/web-assembly/master/images/wasm.png" width="500">
 
 ブラウザからアセンブリ（機械語）を実行できるようにする技術であり、高速化手段、あるいはJavaScriptの処理系にできないことをするといった目的で提案された
 
@@ -11,7 +11,7 @@
 ### Can I use Web Assembly?
 
 Chrome、Firefoxで開発が進んでいる模様
-<img>
+<img src="https://raw.githubusercontent.com/umamichi/web-assembly/master/images/caniuse.png?raw=true" width="100%">
 
 ## WebAssemblyが生まれた経緯
 
@@ -56,12 +56,14 @@ JavaScriptをある制約に従って書くことで、
 
 ### asm.jsの代替案として、Web Assemblyが生まれた
 
-JavaScriptのコードではなく**バイナリコード**をブラウザが扱えるようになることで、
-ファイルサイズを大幅に小さくすることができ、これらの問題を解決しようというもの
+<img src="https://raw.githubusercontent.com/umamichi/web-assembly/master/images/binary-code.jpg" width="500">  
+
+**バイナリコード**をブラウザが扱えるようになることで、
+JavaScriptに比べてファイルサイズを大幅に小さくすることができ、これらの問題を解決しようというもの
+
+<img src="https://raw.githubusercontent.com/umamichi/web-assembly/master/images/asm-js-to-wasm.png" width="500">  
 
 ※バイナリコード・・・コンピューターに処理を依頼する命令を、CPUが理解できるように2進数で表したコードのこと
-
-<img>
 
 
 ## WebAssemblyのすごいところ✨

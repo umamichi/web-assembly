@@ -3,23 +3,26 @@
 
 <img src="https://raw.githubusercontent.com/umamichi/web-assembly/master/images/wasm.png" width="500">
 
-ブラウザからアセンブリ（機械語）を実行できるようにする技術であり、高速化手段、あるいはJavaScriptの処理系にできないことをするといった目的で提案された
+ブラウザからアセンブリ（機械語）を実行できるようにする技術  
+高速化手段、あるいはJavaScriptの処理系にできないことをするといった目的で提案された
 
-2015年6月、Mozilla、Google、Microsoft、Appleが標準フォーマットとして開発に合意した
+2015年6月、Mozilla、Google、Microsoft、Appleが標準フォーマットとして開発することに合意した
 
 ## WebAssemblyが生まれた経緯
 
 ### JavaScriptに実行速度が求められる時代になった
 
-### なぜJavaScriptは遅いか？
+### 1. なぜJavaScriptは遅いか？
 
 + インタプリタ言語である
-+ 動的型付け言語である
++ 動的型付けをしている
 → 解析に時間がかかってしまう  
 
 よって、コンパイラ言語と比べると遅い😭
 
-当初、JavascriptはHTMLに飾り付けをする程度だったが、最近では
+当初、JavascriptはHTMLに飾り付けをする程度だった  
+しかし最近では・・・
+
  + 複雑なアニメーション
  + WebGLなどのグラフィック処理
  + 計算速度の遅いモバイル端末
@@ -27,19 +30,21 @@
 にも用途が広がり、実行速度が求められるようになってきた
 
 
-### 高速化するため、asm.jsが生まれた
+### 2. JavaScriptを高速化するため、asm.jsが生まれた
 
 2013年頃、**asm.js** が生まれた
 asm.jsとは、JavaScriptを高速実行するために開発されたサブセット
-※サブセットとは、全体に対する一部分のこと。本来の規格（JavaScript）に関する限定部分、あるいはソフトウエアの機能を限定して使えるようにしたもの
+＝サブセットとは、全体に対する一部分のこと。本来の規格に関する限定部分、あるいはソフトウエアの機能を限定して使えるようにしたもの
 
-asm.jsとは、JavaScriptをある制約に従って書くことで、**型を明確にして事前コンパイルできるようにする**技術です
+asm.jsとは、JavaScriptをある制約に従って書くことで、  
+**型を明確にして、ブラウザが事前コンパイルできるようにする**技術です
 
 ▼ asm.jsの例
 ```javascript
 function asm(stdin, foreign, heap){ //引数は最大3つ
   // use asm宣言により,JavaScriptインタプリタはこのfunctionをasm.jsコードと解釈し, 事前コンパイルを試みます
-  "use asm"; 
+  "use asm";
+  
   // 共有変数宣言
   var a = 0;
   // 関数定義
@@ -56,7 +61,7 @@ function asm(stdin, foreign, heap){ //引数は最大3つ
 + asm.jsをサポートしない環境では通常のJavaScriptコードとして振舞う
 + 他言語（C/C++）からasm.jsコードを出力可
 + ゲームエンジンによるサポート(Unreal Engine, Unity)
-　→ UnityのコードをWebGLで動作させるときにasm.jsが使われている
+→ UnityのコードをWebGLで動作させるときにasm.jsが使われている
 
 👎 asm.jsの悪いところ
 + ファイルサイズが増大&通信量増加
@@ -66,7 +71,7 @@ function asm(stdin, foreign, heap){ //引数は最大3つ
 + Web API 呼び出しが得意ではない(外部からfunctionを渡す必要がある)
 
 
-### asm.jsの代替案として、Web Assemblyが生まれた
+### 3. asm.jsの代替案として、Web Assemblyが生まれた
 
 **バイナリコード**をブラウザが扱えるようになることで、
 JavaScriptに比べてファイルサイズを大幅に小さくすることができ、これらの問題を解決しようというもの
@@ -80,7 +85,7 @@ JavaScriptに比べてファイルサイズを大幅に小さくすることが�
 
 + asm.jsに比べてファイルサイズが小さくなり、ロード時間が短くなる
 + GC（ガベージコレクション）, DOM, Web API操作が可能
-+ 対応言語はC/C++, Rust（Mozillaによって開発されている）など
++ 対応言語はC/C++, Rust（Mozillaによって開発されている言語）など
 
 ## WebAssemblyの悪いところ👼
 
@@ -90,7 +95,7 @@ JavaScriptに比べてファイルサイズを大幅に小さくすることが�
 + DOMを操作する必要があり、DOMからは解放されない
 
 
-## Can I use Web Assembly?
+## Can I use WebAssembly?
 
 Chrome、Firefoxを中心にこれから開発が進んでいく模様  
 <img src="https://raw.githubusercontent.com/umamichi/web-assembly/master/images/caniuse.png?raw=true" width="100%">

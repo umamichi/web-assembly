@@ -112,7 +112,7 @@ int c=0;
 int count(){return c++;}
 ```
 
-⬇︎これをWebAssemblyに変換するとこうなる
+⬇︎これをWebAssemblyに変換するとこうなる (バイナリファイルは通常のエディタでは開けません)
 
 ▼sample.wasm
 ```wasm
@@ -131,7 +131,7 @@ Chrome Canaryとは・・・開発者向けブラウザ。開発段階の最新�
 
 https://www.google.co.jp/chrome/browser/canary.html
 
-### 2. Chrome Canary起動、URLから「<a href="chrome://flags/#enable-webassembly">chrome://flags/#enable-webassembly</a>」を開く
+### 2. Chrome Canary起動、URLから「[chrome://flags/#enable-webassembly](chrome://flags/#enable-webassembly)」を開く
 
 
 ### 3. WebAssemblyを有効にし、Canary再起動する
@@ -167,7 +167,7 @@ https://www.google.co.jp/chrome/browser/canary.html
 </html>
 ```
 
-**現段階では、wasmファイルをJavaScriptで読み込むための処理が必要です**
+**現段階では、このようにwasmファイルをJavaScriptで読み込むための処理を書く必要があります**
 
 
 ### (おまけ) UnityでつくられたゲームをWebAssemblyで動かす

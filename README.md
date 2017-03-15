@@ -20,8 +20,10 @@
 
 よって、コンパイラ言語と比べると遅い😭
 
-当初、JavascriptはHTMLに飾り付けをする程度だった  
+当初、JavascriptはHTMLに飾り付けをする程度だった  
+
 さっと書いて、すぐに動く、それが売りだった  
+
 しかし最近では・・・
 
  + 複雑なアニメーション
@@ -58,18 +60,18 @@ function asm(stdin, foreign, heap){ //引数は最大3つ
 ```
 
 👍 asm.jsの良いところ
-+ 数値演算系の実行速度が速くなる（通常のJavascriptの6〜7割の速度）
++ 数値演算系の実行速度が速くなる（通常のJavascriptの6〜7割のパフォーマンス）
 + asm.jsをサポートしない環境では通常のJavaScriptコードとして振舞う
 + 他言語（C/C++）からasm.jsコードを出力可
-+ ゲームエンジンによるサポート(Unreal Engine, Unity)
++ ゲームエンジンによるサポート(Unreal Engine, Unity)  
 → UnityのコードをWebGLで動作させるときにasm.jsが使われている
 
 👎 asm.jsの悪いところ
-+ ファイルサイズが増大&通信量増加
++ ファイルサイズが増大&通信量増加  
  → それによるパージング(構文解析)の時間増加 
-+ データ構造の概念が存在しない
++ データ構造の概念が存在しない  
  → 数値計算しかできない。オブジェクト指向的なアプローチが通用しない
-+ Web API 呼び出しが得意ではない(外部からfunctionを渡す必要がある)
++ Web API 呼び出しが得意ではない（外部からfunctionを渡す必要がある）
 
 
 ### 3. asm.jsの代替案として、Web Assemblyが生まれた
@@ -85,8 +87,8 @@ JavaScriptに比べてファイルサイズを大幅に小さくすることが�
 ## WebAssemblyのすごいところ✨
 
 + asm.jsに比べてファイルサイズが小さくなり、ロード時間が短くなる
-+ GC（ガベージコレクション）, DOM, Web API操作が可能
-+ 対応言語はC/C++, Rust（Mozillaによって開発されている言語）など
++ 将来的に、JavaScriptを書かずにGC（ガベージコレクション）, DOM, Web API操作を目標としている
++ 対応言語は現時点でC/C++, Rust（Mozillaによって開発されている言語）など
 
 ## WebAssemblyの悪いところ👼
 
@@ -94,6 +96,7 @@ JavaScriptに比べてファイルサイズを大幅に小さくすることが�
   （下記で書きましたが、現時点でコンパイルがめちゃめちゃめんどくさい）
   
 + DOMを操作する必要があり、DOMからは解放されない
+
 
 
 ## Can I use WebAssembly?
@@ -107,16 +110,18 @@ Chrome、Firefoxを中心にこれから開発が進んでいく模様
 
 以下のようなC言語の関数ををブラウザから呼び出し、実行してみます
 
-▼sample.c
+
 ```c
+// sample.c
 int c=0;
 int count(){return c++;}
 ```
 
 ⬇︎これをWebAssemblyに変換するとこうなる (バイナリファイルは通常のエディタでは開けません)
 
-▼sample.wasm
+
 ```wasm
+// sample.wasm
 0000000    060400  066563  000001  000000  002401  060001  000400  001577
 0000020    000402  002000  000404  000160  002400  000403  000400  011007
 0000040    003002  062555  067555  074562  000002  061405  072557  072156
@@ -173,9 +178,10 @@ https://www.google.co.jp/chrome/browser/canary.html
 
 ### (おまけ) UnityでつくられたゲームをWebAssemblyで動かす
 
-<a href="https://webassembly.github.io/demo/AngryBots/" target="_blank">https://webassembly.github.io/demo/AngryBots/</a>
-<!-- <img src="https://raw.githubusercontent.com/umamichi/web-assembly/master/images/game.gif" width="500"> -->
+Chrome Canaryで開いてください  
 
+<a href="https://webassembly.github.io/demo/AngryBots/" target="_blank">https://webassembly.github.io/demo/AngryBots/</a>
+<img src="https://raw.githubusercontent.com/umamichi/web-assembly/master/images/game.gif" width="500">
 
 
 ## C言語をWebAssembly用にバイナリコードにコンパイルしてみる
@@ -315,7 +321,6 @@ $ ../wabt/out/clang/Debug/no-tests/wast2wasm -o sample.wasm sample.wast
 sample.wast ファイルが生成されたらコンパイル成功！
 
 
-
 ## WebAssemblyをいつ使うか
 
 + 部分的な処理の高速化
@@ -344,4 +349,7 @@ Chromeに搭載されている「Google V8 JavaScriptEngine」は、Javascript�
 ## 参考
 http://gigazine.net/news/20161101-webassembly-browser-preview/
 https://www.slideshare.net/likr/asmjswebassembly
+
++ 将来的に実現したいWasmの仕様書
+https://github.com/WebAssembly/design/blob/master/GC.md
 

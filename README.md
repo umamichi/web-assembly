@@ -1,5 +1,5 @@
 
-## WebAssemblyとは？ 
+# WebAssemblyとは？ 
 
 <img src="https://raw.githubusercontent.com/umamichi/web-assembly/master/images/wasm.png" width="500">
 
@@ -87,6 +87,7 @@ JavaScriptに比べてファイルサイズを大幅に小さくすることが�
 ## WebAssemblyのすごいところ✨
 
 + asm.jsに比べてファイルサイズが小さくなり、ロード時間が短くなる
+  ※実行時間がはやくなるわけでない　　
 + 将来的に、JavaScriptを書かずにGC（ガベージコレクション）, DOM, Web API操作を目標としている
 + 対応言語は現時点でC/C++, Rust（Mozillaによって開発されている言語）など
 
@@ -176,15 +177,37 @@ https://www.google.co.jp/chrome/browser/canary.html
 **現段階では、このようにwasmファイルをJavaScriptで読み込むための処理を書く必要があります**
 
 
-### (おまけ) UnityでつくられたゲームをWebAssemblyで動かす
+### 5.(おまけ) UnityでつくられたゲームをWebAssemblyで動かす
 
 Chrome Canaryで開いてください  
 
-<a href="https://webassembly.github.io/demo/AngryBots/" target="_blank">https://webassembly.github.io/demo/AngryBots/</a>
-<img src="https://raw.githubusercontent.com/umamichi/web-assembly/master/images/game.gif" width="500">
+<a href="http://webassembly.org/demo/Tanks/" target="_blank">http://webassembly.org/demo/Tanks/</a>  
+<img src="http://webassembly.org/demo/screenshot.jpg" width="500">
 
 
-## C言語をWebAssembly用にバイナリコードにコンパイルしてみる
+
+## WebAssemblyをいつ使うか
+
++ 部分的な処理の高速化
++ ブラウザゲームや、ブラウザ上でのVRやAR
++ ブラウザ上での画像処理/動画処理
++ 他言語で書かれた既存プログラムの流用
+
+## まとめ＆今後
+
++ WebAssemblyを使えば、何でも速くなるわけではない。
+　asm.jsと比べて早くなるのはロード時間のみ。実行時間ではない    
+
++ 現時点でコンパイル環境をつくるのがかなり面倒 
+
++ これまでWebでできなかった種類のアプリケーションが実現できる（特にグラフィック処理の多いゲーム系） 
+
++ 将来的にC, C#以外の言語でもWebAssemblyにコンパイルされる「クロスコンパイラ」の可能性が高まっている
+ → WEBアプリ開発にJavascriptが必須ではなくなる？
+
+
+
+# C言語をWebAssembly用バイナリコードにコンパイルしてみる
 
 
 **⚠️ 注意 3〜4時間かかります**
@@ -198,20 +221,17 @@ Chrome Canaryで開いてください
 
 ### WebAssemblyバイナリへコンパイルする流れ
 
-人間がwasmのバイナリを書くのは無理なので、
-何かしらの方法でソースコードから生成する必要があります。
-現状ではオープンソースのコンパイラ基盤 LLVM を使います。
+オープンソースのコンパイラ基盤 LLVM を使います  
 
 <img>
 
 LLVMは、フロントエンドとバックエンドにコンパイラが分かれており、
-内部で中間表現(LLVM IR)に変換することで、指定の形式にコンパイルすることができます。
+内部で中間表現(LLVM IR)に変換することで、指定の形式にコンパイルすることができます  
 
 
 ### 1.LLVM+clang のインストール
 
 ① LLVM をダウンロードする
-LLVM とは、コンパイル時、リンク時、実行時などあらゆる時点でプログラムを最適化するよう設計された、**コンパイラ基盤**である。
 
 ```
 $ mkdir web-assembly  // 任意の場所に作業ディレクトリを作る
@@ -221,7 +241,8 @@ $ git clone http://llvm.org/git/llvm.git
 
 
 ② clang（クラン）をダウンロードする
-clangとは、プログラミング言語 C、C++、Objective-C、Objective-C++ 向けのコンパイラフロントエンドである。 バックエンドとして LLVM を使用している。
+clangとは、プログラミング言語 C、C++、Objective-C、Objective-C++ 向けのコンパイラフロントエンドである   
+バックエンドとして LLVM を使用している。
 
 ```
 $ cd llvm/tools
@@ -229,7 +250,7 @@ $ git clone http://llvm.org/git/clang.git
 ```
 
 ③ cmakeを使えるようにしておく
-cmakeとはCMakeはコンパイラに依存しないビルド自動化のためのフリーソフトウェアである
+cmakeはコンパイラに依存しないビルド自動化のためのフリーソフトウェアである  
 
 ```
 $ brew update
@@ -252,8 +273,8 @@ $ sudo make install
 
 ### 2. binaryenのインストール
 
-binaryenとは、Mozilla社が開発した、WebAssemblyのツールチェインのためのプロジェクト。
-WebAssemblyモジュールをロードできる「Binaryen shell」や「asm.js」技術を使って実装されたコードをWebAssemblyにコンパイルする「asm2wasm」、その逆の処理を行う「wasm2asm」、LLVMで開発されているWebAssemblyバックエンドが出力する「.s」形式コードをWebAssemblyにコンパイルする「s2wasm」、BinaryenのJaVaScriptポートである「wasm.js」などを含んでいる。
+binaryenとは、WebAssemblyのツールチェインのためのプロジェクト。
+WebAssemblyモジュールをロードできる「Binaryen shell」や「asm.js」を使って実装されたコードをWebAssemblyにコンパイルする「asm2wasm」、その逆の処理を行う「wasm2asm」、LLVMで開発されているWebAssemblyバックエンドが出力する「.s」形式コードをWebAssemblyにコンパイルする「s2wasm」などを含んでいる
 
 
 ```
@@ -268,7 +289,8 @@ $ sudo make install
 
 ### 3. wabtのインストール
 
-wabtとは・・・
+WebAssembly Binary Toolkit.  
+wastファイルをwasmファイルにコンパイルするために必要です  
 
 ```
 cd ..
@@ -277,7 +299,7 @@ $ cd wabt
 $ make clang-debug-no-tests
 ```
 
-※ READMEには ```$ make``` と書いてありますが、```vector not found```というエラーが出たので、```make clang-debug-no-tests```とするとうまくいきました。
+※ READMEには ```$ make``` と書いてありますが、```vector not found```というエラーが出たので、```make clang-debug-no-tests```とするとうまくいきました  
 参考）https://github.com/WebAssembly/wabt/issues/333
 
 ※ もし下記のようなエラーがでたらbisonのバージョンをあげる必要があります  
@@ -318,38 +340,13 @@ $ s2wasm sample.s > sample.wast
 $ ../wabt/out/clang/Debug/no-tests/wast2wasm -o sample.wasm sample.wast
 ```
 
-sample.wast ファイルが生成されたらコンパイル成功！
+sample.wast ファイルが生成されたらコンパイル成功！  
 
-
-## WebAssemblyをいつ使うか
-
-+ 部分的な処理の高速化
-+ ブラウザゲームや、ブラウザ上でのVRやAR
-+ ブラウザ上での画像処理/動画処理
-+ ストリーミング配信
-+ 他言語で書かれた既存プログラムの流用
-
-## まとめ＆今後
-
-+ WebAssemblyを使えば、何でも速くなるわけではない
-
-+ これまでWebでできなかった種類のアプリケーションが実現できる（特にグラフィック処理の多いゲーム系？） 
-
-+ 将来的にC, C#以外の言語でもWebAssemblyにコンパイルされる「クロスコンパイラ」の可能性が高まっている
- → WEBアプリ開発にJavascriptが必須ではなくなる？
-
-
-
-### （おまけ）ChromeはすでにJavascriptを機械語に翻訳している？
-
-Chromeに搭載されている「Google V8 JavaScriptEngine」は、Javascriptをあらかじめ機械語に翻訳している。  
-そのため、WebAssemblyは必ずしもJavascriptより早くなる、というわけではない
+適用なサーバーを立て、先ほどのhtmlファイルとwasmファイルを配置すると動きます
 
 
 ## 参考
 http://gigazine.net/news/20161101-webassembly-browser-preview/
 https://www.slideshare.net/likr/asmjswebassembly
-
-+ 将来的に実現したいWasmの仕様書
 https://github.com/WebAssembly/design/blob/master/GC.md
 

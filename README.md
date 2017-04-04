@@ -44,19 +44,35 @@ asm.jsとは、JavaScriptをある制約に従って書くことで、
 
 ▼ asm.jsの例
 ```javascript
-function asm(stdin, foreign, heap){ //引数は最大3つ
-  // use asm宣言により,JavaScriptインタプリタはこのfunctionをasm.jsコードと解釈し, 事前コンパイルを試みます
-  "use asm";
+// (1)asm.js関数宣言
+function asm(stdin, foreign, heap){// 引数は最大3つ
+  // use asm宣言により,JavaScriptインタプリタはこのfunctionをasm.jsコードと解釈し, 事前コンパイルを試みる
+  "use asm"; // (2)use asm宣言
   
-  // 共有変数宣言
+  // (3)インポート宣言
+  var imul = stdin.Math.imul;
+  var fround = stdin.Math.fround;
+  var callOuter = foreign.callOuter;
+  
+  // (4)共有変数宣言
   var a = 0;
-  // 関数定義
+  var b = 0.0;
+  var c = fround(0);
+  var array = new stdin.Uint8Array(heap);
+
+  // (5)関数定義
   function hoge(){
-    callOuter();
+  	callOuter();
   }
-  // 外部への公開
-  return stdin.hoge;
+  
+  // (6)外部への公開
+  return {hoge: hoge};
 }
+
+// (7)asm.jsモジュールの呼び出し
+let asmmod = asm(self, {callOuter: function(){}}, new ArrayBuffer(0x10000));
+asmmod.hoge();
+
 ```
 
 👍 asm.jsの良いところ

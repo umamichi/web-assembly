@@ -45,7 +45,11 @@ asm.jsとは、JavaScriptをある制約に従って書くことで、
 ▼ asm.jsの例
 ```javascript
 // (1)asm.js関数宣言
-function asm(stdin, foreign, heap){// 引数は最大3つ
+function asm(stdin, foreign, heap){ // 引数は最大3つ
+  // stdin     asm.jsモジュールを利用するコンテキスト（スクリプトの実行環境）を渡す
+  // foreign   外部の処理を呼び出したい際に, 当該のfunctionをオブジェクト形式で渡す
+  // heap      asm.jsモジュール内部で利用するメモリ領域をArrayBufferオブジェクトとして渡す
+
   // use asm宣言により,JavaScriptインタプリタはこのfunctionをasm.jsコードと解釈し, 事前コンパイルを試みる
   "use asm"; // (2)use asm宣言
   
@@ -62,7 +66,7 @@ function asm(stdin, foreign, heap){// 引数は最大3つ
 
   // (5)関数定義
   function hoge(){
-  	callOuter();
+    callOuter();
   }
   
   // (6)外部への公開
@@ -75,6 +79,9 @@ asmmod.hoge();
 
 ```
 
+▼ 引数は3つ
+
+
 👍 asm.jsの良いところ
 + 数値演算系の実行速度が速くなる（通常のJavascriptの6〜7割のパフォーマンス）
 + asm.jsをサポートしない環境では通常のJavaScriptコードとして振舞う
@@ -83,8 +90,7 @@ asmmod.hoge();
 → UnityのコードをWebGLで動作させるときにasm.jsが使われている
 
 👎 asm.jsの悪いところ
-+ ファイルサイズが増大&通信量増加  
- → それによるパージング（構文解析）の時間増加 
++ ファイルサイズが増大&ロード時間増加  
 + データ構造の概念が存在しない  
  → 数値計算しかできない。オブジェクト指向的なアプローチが通用しない
 + Web API 呼び出しが得意ではない（外部からfunctionを渡す必要がある）
@@ -190,7 +196,7 @@ https://www.google.co.jp/chrome/browser/canary.html
 </html>
 ```
 
-**現段階では、このようにwasmファイルをJavaScriptで読み込むための処理を書く必要があります**
+**現段階では、このようにwasmファイルを読み込むためにJavaScriptを書く必要があります**
 
 
 ### 5.(おまけ) UnityでつくられたゲームをWebAssemblyで動かす
@@ -211,15 +217,14 @@ Chrome Canaryで開いてください
 
 ## まとめ＆今後
 
-+ WebAssemblyを使えば、何でも速くなるわけではない。
++ WebAssemblyを使えば、何でも速くなるわけではない
 　asm.jsと比べて早くなるのはロード時間のみ。実行時間ではない    
 
 + 現時点でコンパイル環境をつくるのがかなり面倒 
 
 + これまでWebでできなかった種類のアプリケーションが実現できる（特にグラフィック処理の多いゲーム系） 
 
-+ 将来的にC, C#以外の言語でもWebAssemblyにコンパイルされる「クロスコンパイラ」の可能性が高まっている
- → WEBアプリ開発にJavascriptが必須ではなくなる？
++ 将来的にC, C#以外の言語でもWebAssemblyにコンパイルできるようになる
 
 
 

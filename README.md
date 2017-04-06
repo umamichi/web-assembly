@@ -44,43 +44,20 @@ asm.jsとは、JavaScriptをある制約に従って書くことで、
 
 ▼ asm.jsの例
 ```javascript
-// (1)asm.js関数宣言
-function asm(stdin, foreign, heap){ // 引数は最大3つ
-  // stdin     asm.jsモジュールを利用するコンテキスト（スクリプトの実行環境）を渡す
-  // foreign   外部の処理を呼び出したい際に, 当該のfunctionをオブジェクト形式で渡す
-  // heap      asm.jsモジュール内部で利用するメモリ領域をArrayBufferオブジェクトとして渡す
-
-  // use asm宣言により,JavaScriptインタプリタはこのfunctionをasm.jsコードと解釈し, 事前コンパイルを試みる
-  "use asm"; // (2)use asm宣言
+function asm(stdin, foreign, heap){ //引数は最大3つ
+  // use asm宣言により,JavaScriptインタプリタはこのfunctionをasm.jsコードと解釈し, 事前コンパイルを試みます
+  "use asm";
   
-  // (3)インポート宣言
-  var imul = stdin.Math.imul;
-  var fround = stdin.Math.fround;
-  var callOuter = foreign.callOuter;
-  
-  // (4)共有変数宣言
+  // 共有変数宣言
   var a = 0;
-  var b = 0.0;
-  var c = fround(0);
-  var array = new stdin.Uint8Array(heap);
-
-  // (5)関数定義
+  // 関数定義
   function hoge(){
     callOuter();
   }
-  
-  // (6)外部への公開
-  return {hoge: hoge};
+  // 外部への公開
+  return stdin.hoge;
 }
-
-// (7)asm.jsモジュールの呼び出し
-let asmmod = asm(self, {callOuter: function(){}}, new ArrayBuffer(0x10000));
-asmmod.hoge();
-
 ```
-
-▼ 引数は3つ
-
 
 👍 asm.jsの良いところ
 + 数値演算系の実行速度が速くなる（通常のJavascriptの6〜7割のパフォーマンス）
@@ -90,7 +67,8 @@ asmmod.hoge();
 → UnityのコードをWebGLで動作させるときにasm.jsが使われている
 
 👎 asm.jsの悪いところ
-+ ファイルサイズが増大&ロード時間増加  
++ ファイルサイズが増大&通信量増加  
+ → それによるパージング（構文解析）の時間増加 
 + データ構造の概念が存在しない  
  → 数値計算しかできない。オブジェクト指向的なアプローチが通用しない
 + Web API 呼び出しが得意ではない（外部からfunctionを渡す必要がある）
@@ -108,8 +86,8 @@ JavaScriptに比べてファイルサイズを大幅に小さくすることが�
 
 ## WebAssemblyのすごいところ✨
 
-+ asm.jsに比べてファイルサイズが小さくなり、ロード時間が短くなる  
-  ※実行時間がはやくなるわけでない
++ asm.jsに比べてファイルサイズが小さくなり、ロード時間が短くなる
+  ※実行時間がはやくなるわけでない	
 + 将来的に、JavaScriptを書かずにGC, DOM, Web API操作を目標としている
 + 対応言語は現時点でC/C++, Rust（Mozillaによって開発されている言語）など
 
@@ -196,7 +174,7 @@ https://www.google.co.jp/chrome/browser/canary.html
 </html>
 ```
 
-**現段階では、このようにwasmファイルを読み込むためにJavaScriptを書く必要があります**
+**現段階では、このようにwasmファイルをJavaScriptで読み込むための処理を書く必要があります**
 
 
 ### 5.(おまけ) UnityでつくられたゲームをWebAssemblyで動かす
@@ -211,20 +189,21 @@ Chrome Canaryで開いてください
 ## WebAssemblyをいつ使うか
 
 + 部分的な処理の高速化
-+ ブラウザゲームや、ブラウザ上でのVRやAR
-+ ブラウザ上での画像処理/動画処理
-+ 他言語で書かれた既存プログラムの流用
+  → ブラウザ上で高速な画像処理/動画処理が必要な場合
++ C, C++等の他言語で書かれた既存アプリを移植
++ WASMでほとんどを実装し、UIなどをWeb技術で実装する
 
 ## まとめ＆今後
 
-+ WebAssemblyを使えば、何でも速くなるわけではない
++ WebAssemblyを使えば、何でも速くなるわけではない。
 　asm.jsと比べて早くなるのはロード時間のみ。実行時間ではない    
 
 + 現時点でコンパイル環境をつくるのがかなり面倒 
 
 + これまでWebでできなかった種類のアプリケーションが実現できる（特にグラフィック処理の多いゲーム系） 
 
-+ 将来的にC, C#以外の言語でもWebAssemblyにコンパイルできるようになる
++ 将来的にC, C#以外の言語でもWebAssemblyにコンパイルされる「クロスコンパイラ」の可能性が高まっている
+ → WEBアプリ開発にJavascriptが必須ではなくなる？
 
 
 
@@ -358,7 +337,7 @@ int count(){return c++;}
 $ clang -emit-llvm --target=wasm32 -S sample.c
 $ llc sample.ll -march=wasm32
 $ s2wasm sample.s > sample.wast
-$ ../wabt/out/clang/Debug/no-tests/wast2wasm -o sample.wasm sample.wast
+$ ../wabt/out/clang/Debug/no-tests/wast2wasm -o sample.wasm sampl e.wast
 ```
 
 sample.wast ファイルが生成されたらコンパイル成功！  
@@ -366,8 +345,41 @@ sample.wast ファイルが生成されたらコンパイル成功！
 適用なサーバーを立て、先ほどのhtmlファイルとwasmファイルを配置すると動きます
 
 
+## どれくらい速くなるのか検証してみた
+
+### JavaScript
+
+```javascript
+  console.time('timer2'); 
+  for (var i = 0; i < 10000000; i++) {
+    const x = 0.000001 * 0.000001;
+  }
+  console.timeEnd('timer2');
+```
+#### 結果: 5.84ms
+
+
+### WASM
+
+```c
+int loop(){
+  int i;
+  double x;
+  for (i = 0; i < 10000000; i++) {
+    x = 0.000001 * 0.000001;
+  }
+  return 0;
+}
+```
+
+#### 結果: 35.3ms
+
+### → 速くならなかった、むしろ遅くなった
+
+
+
 ## 参考
-http://gigazine.net/news/20161101-webassembly-browser-preview/
-https://www.slideshare.net/likr/asmjswebassembly
+http://gigazine.net/news/20161101-webassembly-browser-preview/  
+https://www.slideshare.net/likr/asmjswebassembly  
 https://github.com/WebAssembly/design/blob/master/GC.md
 

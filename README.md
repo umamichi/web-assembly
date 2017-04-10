@@ -46,7 +46,7 @@ asm.jsとは、JavaScriptをある制約に従って書くことで、
 ```javascript
 function asm(stdin, foreign, heap){ //引数は最大3つ
   // use asm宣言により,JavaScriptインタプリタはこのfunctionをasm.jsコードと解釈し, 事前コンパイルを試みます
-  'use asm';
+  "use asm";
   
   // 共有変数宣言
   var a = 0;
@@ -82,6 +82,18 @@ JavaScriptに比べてファイルサイズを大幅に小さくすることが�
 <img src="https://raw.githubusercontent.com/umamichi/web-assembly/master/images/asm-js-to-wasm.png" width="500">  
 
 ※バイナリコード・・・コンピューターに処理を依頼する命令を、CPUが理解できるように2進数で表したコードのこと
+
+
+#### どれくらい軽くなるのか？
+
+
+ゲームプログラム |	コードのサイズ（asm.js）| コードのサイズ（WebAssembly）
+| -- | -- | -- |
+|Hello World | 301KiB | 204KiB |
+|AngryBots | 19MiB | 6MiB |
+|StandardAssets  | 25.7MiB | 13.4MiB |
+|UnityChan-CRS | 21.3MiB | 11.4MiB |
+
 
 
 ## WebAssemblyのすごいところ✨
@@ -337,7 +349,7 @@ int count(){return c++;}
 $ clang -emit-llvm --target=wasm32 -S sample.c
 $ llc sample.ll -march=wasm32
 $ s2wasm sample.s > sample.wast
-$ ../wabt/out/clang/Debug/no-tests/wast2wasm -o sample.wasm sampl e.wast
+$ ../wabt/out/clang/Debug/no-tests/wast2wasm -o sample.wasm sample.wast
 ```
 
 sample.wast ファイルが生成されたらコンパイル成功！  
@@ -345,41 +357,8 @@ sample.wast ファイルが生成されたらコンパイル成功！
 適用なサーバーを立て、先ほどのhtmlファイルとwasmファイルを配置すると動きます
 
 
-## どれくらい速くなるのか検証してみた
-
-### JavaScript
-
-```javascript
-  console.time('timer2'); 
-  for (var i = 0; i < 10000000; i++) {
-    const x = 0.000001 * 0.000001;
-  }
-  console.timeEnd('timer2');
-```
-#### 結果: 5.84ms
-
-
-### WASM
-
-```c
-int loop(){
-  int i;
-  double x;
-  for (i = 0; i < 10000000; i++) {
-    x = 0.000001 * 0.000001;
-  }
-  return 0;
-}
-```
-
-#### 結果: 35.3ms
-
-### → 速くならなかった、むしろ遅くなった
-
-
-
 ## 参考
-http://gigazine.net/news/20161101-webassembly-browser-preview/  
-https://www.slideshare.net/likr/asmjswebassembly  
+http://gigazine.net/news/20161101-webassembly-browser-preview/
+https://www.slideshare.net/likr/asmjswebassembly
 https://github.com/WebAssembly/design/blob/master/GC.md
 

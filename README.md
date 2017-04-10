@@ -46,7 +46,7 @@ asm.jsとは、JavaScriptをある制約に従って書くことで、
 ```javascript
 function asm(stdin, foreign, heap){ //引数は最大3つ
   // use asm宣言により,JavaScriptインタプリタはこのfunctionをasm.jsコードと解釈し, 事前コンパイルを試みます
-  "use asm";
+  'use asm';
   
   // 共有変数宣言
   var a = 0;

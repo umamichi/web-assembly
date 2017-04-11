@@ -364,8 +364,8 @@ sample.wast ファイルが生成されたらコンパイル成功！
 適用なサーバーを立て、先ほどのhtmlファイルとwasmファイルを配置すると動きます
 
 
-## 参考
-http://gigazine.net/news/20161101-webassembly-browser-preview/  
-https://www.slideshare.net/likr/asmjswebassembly  
+## 参考・引用
+http://gigazine.net/news/20161101-webassembly-browser-preview/  
+https://www.slideshare.net/likr/asmjswebassembly  
 https://github.com/WebAssembly/design/blob/master/GC.md  
 http://qiita.com/akira_/items/846a457ea110c172f2a5

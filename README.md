@@ -216,16 +216,14 @@ Chrome Canaryで開いてください
 
 ## まとめ＆今後
 
-+ WebAssemblyを使えば、何でも速くなるわけではない。
-　asm.jsと比べて早くなるのはロード時間のみ。実行時間ではない    
++ WebAssemblyを使えば、何でも速くなるわけではない。  
+　asm.jsと比べて早くなるのはロード時間とパース時間のみ。実行時間ではない   
 
 + 現時点でコンパイル環境をつくるのがかなり面倒 
 
 + これまでWebでできなかった種類のアプリケーションが実現できる（特にグラフィック処理の多いゲーム系） 
 
-+ 将来的にC, C#以外の言語でもWebAssemblyにコンパイルされる「クロスコンパイラ」の可能性が高まっている
- → WEBアプリ開発にJavascriptが必須ではなくなる？
-
++ 将来的にはC, C#以外の言語でもWebAssemblyにコンパイルできるようになるらしい
 
 
 # C言語をWebAssembly用バイナリコードにコンパイルしてみる
@@ -367,7 +365,7 @@ sample.wast ファイルが生成されたらコンパイル成功！
 
 
 ## 参考
-http://gigazine.net/news/20161101-webassembly-browser-preview/
-https://www.slideshare.net/likr/asmjswebassembly
-https://github.com/WebAssembly/design/blob/master/GC.md
+http://gigazine.net/news/20161101-webassembly-browser-preview/  
+https://www.slideshare.net/likr/asmjswebassembly  
+https://github.com/WebAssembly/design/blob/master/GC.md  
 http://qiita.com/akira_/items/846a457ea110c172f2a5

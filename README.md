@@ -30,7 +30,7 @@
  + WebGLなどのグラフィック処理
  + 計算速度の遅いモバイル端末
 
-にも用途が広がり、実行速度が求められるようになってきた
+などにも用途が広がり、実行速度が求められるようになってきた
 
 
 ### 2. JavaScriptを高速化するため、asm.jsが生まれ
@@ -47,7 +47,9 @@ asm.jsとは、JavaScriptをある制約に従って書くことで、
 function asm(stdin, foreign, heap){ //引数は最大3つ
   // use asm宣言により,JavaScriptインタプリタはこのfunctionをasm.jsコードと解釈し, 事前コンパイルを試みます
   "use asm";
-  
+  // インポート宣言
+		var imul = stdin.Math.imul;
+		var callOuter = foreign.callOuter;
   // 共有変数宣言
   var a = 0;
   // 関数定義
@@ -98,9 +100,9 @@ JavaScriptに比べてファイルサイズを大幅に小さくすることが�
 
 ## WebAssemblyのすごいところ✨
 
-+ asm.jsに比べてファイルサイズが小さくなり、ロード時間が短くなる
++ asm.jsに比べてファイルサイズが小さくなり、ロード時間が短くなる  
   ※実行時間がはやくなるわけでない	
-+ 将来的に、JavaScriptを書かずにGC, DOM, Web API操作を目標としている
++ 将来的には、JavaScriptを書かずにGC, DOM, Web API操作を目標としている
 + 対応言語は現時点でC/C++, Rust（Mozillaによって開発されている言語）など
 
 ## WebAssemblyの悪いところ👼
@@ -108,7 +110,7 @@ JavaScriptに比べてファイルサイズを大幅に小さくすることが�
 + どの言語で書こうが事前コンパイルが必須
   （下記で書きましたが、現時点でコンパイルがめちゃめちゃめんどくさい）
   
-+ DOMを操作する必要があり、DOMからは解放されない
++ 現時点ではDOMを操作する必要があり、DOMからは解放されない
 
 
 
@@ -116,6 +118,13 @@ JavaScriptに比べてファイルサイズを大幅に小さくすることが�
 
 Chrome、Firefoxを中心にこれから開発が進んでいく模様  
 <img src="https://raw.githubusercontent.com/umamichi/web-assembly/master/images/caniuse.png?raw=true" width="100%">
+
+
+## どれくらい速くなるの？
+
+**最大で3倍近く速くなる**
+<img src="https://raw.githubusercontent.com/umamichi/web-assembly/master/images/performance.png?raw=true" width="100%">
+計算内容の詳細：　http://qiita.com/akira_/items/846a457ea110c172f2a5
 
 
 ## C言語をWebAssembly対応ブラウザで動かしてみる
@@ -361,4 +370,4 @@ sample.wast ファイルが生成されたらコンパイル成功！
 http://gigazine.net/news/20161101-webassembly-browser-preview/
 https://www.slideshare.net/likr/asmjswebassembly
 https://github.com/WebAssembly/design/blob/master/GC.md
-
+http://qiita.com/akira_/items/846a457ea110c172f2a5

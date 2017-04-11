@@ -365,11 +365,12 @@ sample.wast ファイルが生成されたらコンパイル成功！
 
 
 ### Emscripten
+今回は試していませんが、  
 Rustをwasmにコンパイルする時は、Emscriptenを使う方が良いようです  
-1コマンドでwasmファイルに変換してくれます  
+コマンド1つでwasmファイルに変換してくれます  
 
-参考） 「RustからWebAssemblyにコンパイルしてみる」  
-http://suzumi.hatenablog.com/entry/2017/01/05/180405  
+参考） 「RustからWebAssemblyにコンパイルしてみる」   
+http://suzumi.hatenablog.com/entry/2017/01/05/180405   
 
 
 ## 参考・引用

@@ -364,6 +364,14 @@ sample.wast ファイルが生成されたらコンパイル成功！
 適用なサーバーを立て、先ほどのhtmlファイルとwasmファイルを配置すると動きます
 
 
+### Emscripten
+Rustをwasmにコンパイルする時は、Emscriptenを使う方が良いようです  
+1コマンドでwasmファイルに変換してくれます  
+
+参考） 「RustからWebAssemblyにコンパイルしてみる」  
+http://suzumi.hatenablog.com/entry/2017/01/05/180405  
+
+
 ## 参考・引用
 http://gigazine.net/news/20161101-webassembly-browser-preview/  
 

@@ -116,7 +116,7 @@ JavaScriptに比べてファイルサイズを大幅に小さくすることが�
 
 ## Can I use WebAssembly?
 
-Chrome、Firefoxを中心にこれから開発が進んでいく模様  
+Chrome、Firefox, Operaを中心にこれから開発が進んでいく模様  
 <img src="https://raw.githubusercontent.com/umamichi/web-assembly/master/images/caniuse.png?raw=true" width="100%">
 
 
@@ -209,7 +209,7 @@ Chrome Canaryで開いてください
 
 ## WebAssemblyをいつ使うか
 
-+ 部分的な処理の高速化
++ 部分的な処理の高速化  
   → ブラウザ上で高速な画像処理/動画処理が必要な場合
 + C, C++等の他言語で書かれた既存アプリを移植
 + WASMでほとんどを実装し、UIなどをWeb技術で実装する

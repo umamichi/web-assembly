@@ -242,7 +242,7 @@ Chrome Canaryで開いてください
 
 オープンソースのコンパイラ基盤 LLVM を使います  
 
-<img>
+<img src="https://raw.githubusercontent.com/umamichi/web-assembly/master/images/compile-map.png" width="500">  
 
 LLVMは、フロントエンドとバックエンドにコンパイラが分かれており、
 内部で中間表現(LLVM IR)に変換することで、指定の形式にコンパイルすることができます  

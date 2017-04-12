@@ -33,7 +33,7 @@
 などにも用途が広がり、実行速度が求められるようになってきた
 
 
-### 2. JavaScriptを高速化するため、asm.jsが生まれ
+### 2. JavaScriptを高速化するため、asm.jsが生まれた
 
 2013年頃、**asm.js**（読み：アスム） が生まれた  
 asm.jsとは、JavaScriptを高速実行するために開発されたサブセット  
@@ -43,6 +43,7 @@ asm.jsとは、JavaScriptをある制約に従って書くことで、
 **型を明確にして、ブラウザが事前コンパイルできるようにする**技術です
 
 ▼ asm.jsの例
+
 ```javascript
 function asm(stdin, foreign, heap){ //引数は最大3つ
   // use asm宣言により,JavaScriptインタプリタはこのfunctionをasm.jsコードと解釈し, 事前コンパイルを試みます
@@ -62,13 +63,15 @@ function asm(stdin, foreign, heap){ //引数は最大3つ
 ```
 
 👍 asm.jsの良いところ
-+ 数値演算系の実行速度が速くなる（通常のJavascriptの6〜7割のパフォーマンス）
+
++ 数値演算系の実行速度が速くなる（通常のJavascriptの6〜7割の時間で処理が終わる）
 + asm.jsをサポートしない環境では通常のJavaScriptコードとして振舞う
 + 他言語（C/C++）からasm.jsコードを出力可（コンパイラを使う）
 + ゲームエンジンによるサポート（Unreal Engine, Unity）  
 → UnityのコードをWebGLで動作させるときにasm.jsが使われている
 
 👎 asm.jsの悪いところ
+
 + ファイルサイズが増大&通信量増加  
  → それによるパージング（構文解析）の時間増加 
 + データ構造の概念が存在しない  
@@ -88,15 +91,12 @@ JavaScriptに比べてファイルサイズを大幅に小さくすることが�
 
 #### どれくらい軽くなるのか？
 
-
-ゲームプログラム |	コードのサイズ（asm.js）| コードのサイズ（WebAssembly）
-| -- | -- | -- |
-|Hello World | 301KiB | 204KiB |
-|AngryBots | 19MiB | 6MiB |
-|StandardAssets  | 25.7MiB | 13.4MiB |
-|UnityChan-CRS | 21.3MiB | 11.4MiB |
-
-
+| ゲームプログラム | コードのサイズ（asm.js） | コードのサイズ（WebAssembly） |
+| --- | --- | --- |
+| Hello World | 301KiB | 204KiB |
+| AngryBots | 19MiB | 6MiB |
+| StandardAssets  | 25.7MiB | 13.4MiB |
+| UnityChan-CRS | 21.3MiB | 11.4MiB |
 
 ## WebAssemblyのすごいところ✨
 
@@ -153,23 +153,17 @@ int count(){return c++;}
 0000127
 ```
 
-### 1. Chrome Canaryをインストール
+### 1. Google Chrome を最新版へアップデートする（v57以降）
 
-Chrome Canaryとは・・・開発者向けブラウザ。開発段階の最新機能を備えている  
+### 2. Google ChromeのURLから「[chrome://flags/#enable-webassembly](chrome://flags/#enable-webassembly)」を開く
 
-https://www.google.co.jp/chrome/browser/canary.html
-
-### 2. Chrome Canary起動、URLから「[chrome://flags/#enable-webassembly](chrome://flags/#enable-webassembly)」を開く
-
-
-### 3. WebAssemblyを有効にし、Canary再起動する
-
+### 3. WebAssemblyを有効にし、Chrome再起動する
 
 ### 4. https://umamichi.github.io/wasm/ にアクセスし、デペロッパーツールを開き、画面上のボタンをクリックする
 
 クリックする度にインクリメントされた数値がコンソールに出力されたら成功です
 
-```::index.html
+```html
 <html>
 <head>
   <meta charset="utf-8" />
@@ -199,9 +193,7 @@ https://www.google.co.jp/chrome/browser/canary.html
 
 
 ### 5.(おまけ) UnityでつくられたゲームをWebAssemblyで動かす
-
-Chrome Canaryで開いてください  
-
+ 
 <a href="http://webassembly.org/demo/Tanks/" target="_blank">http://webassembly.org/demo/Tanks/</a>  
 <img src="http://webassembly.org/demo/screenshot.jpg" width="500">
 
@@ -216,9 +208,8 @@ Chrome Canaryで開いてください
 
 ## まとめ＆今後
 
-+ WebAssemblyを使えば、何でも速くなるわけではない。  
-　asm.jsと比べて早くなるのはロード時間とパース時間のみ。実行時間ではない   
-
++ WebAssemblyを使えば、何でも速くなるわけではない
+  → asm.jsと比べて早くなるのはロード時間とパース時間のみ。必ずしも実行時間が速くなるわけではない  
 + 現時点でコンパイル環境をつくるのがかなり面倒 
 
 + これまでWebでできなかった種類のアプリケーションが実現できる（特にグラフィック処理の多いゲーム系） 
@@ -252,7 +243,7 @@ LLVMは、フロントエンドとバックエンドにコンパイラが分か�
 
 ① LLVM をダウンロードする
 
-```
+```bash
 $ mkdir web-assembly  // 任意の場所に作業ディレクトリを作る
 $ cd web-assembly
 $ git clone http://llvm.org/git/llvm.git
@@ -263,7 +254,7 @@ $ git clone http://llvm.org/git/llvm.git
 clangとは、プログラミング言語 C、C++、Objective-C、Objective-C++ 向けのコンパイラフロントエンドである   
 バックエンドとして LLVM を使用している。
 
-```
+```bash
 $ cd llvm/tools
 $ git clone http://llvm.org/git/clang.git
 ```
@@ -271,14 +262,14 @@ $ git clone http://llvm.org/git/clang.git
 ③ cmakeを使えるようにしておく
 cmakeはコンパイラに依存しないビルド自動化のためのフリーソフトウェアである  
 
-```
+```bash
 $ brew update
 $ brew install cmake
 ```
 
 ④ LLVMとclangをインストールする
 
-```
+```bash
 $ cd ../../   // ルートに戻る
 $ mkdir llvm_build
 $ cd llvm_build
@@ -296,7 +287,7 @@ binaryenとは、WebAssemblyのツールチェインのためのプロジェク�
 WebAssemblyモジュールをロードできる「Binaryen shell」や「asm.js」を使って実装されたコードをWebAssemblyにコンパイルする「asm2wasm」、その逆の処理を行う「wasm2asm」、LLVMで開発されているWebAssemblyバックエンドが出力する「.s」形式コードをWebAssemblyにコンパイルする「s2wasm」などを含んでいる
 
 
-```
+```bash
 $ cd .. // ルートに戻る
 $ git clone https://github.com/WebAssembly/binaryen.git
 $ cd binaryen
@@ -311,7 +302,7 @@ $ sudo make install
 WebAssembly Binary Toolkit.  
 wastファイルをwasmファイルにコンパイルするために必要です  
 
-```
+```bash
 cd ..
 $ git clone --recursive https://github.com/WebAssembly/wabt
 $ cd wabt
@@ -322,6 +313,7 @@ $ make clang-debug-no-tests
 参考）https://github.com/WebAssembly/wabt/issues/333
 
 ※ もし下記のようなエラーがでたらbisonのバージョンをあげる必要があります  
+
 ```
 -- Could NOT find BISON: Found unsuitable version "2.3", but required is at least "3.0" (found /usr/bin/bison)
 CMake Error at CMakeLists.txt:308 (message):
@@ -337,7 +329,7 @@ brewなどをつかってbisonのバージョンを上げ、PATHを通してく�
 
 ### 4. コンパイルする
 
-```
+```bash
 $ cd ..  // ルートにもどり
 $ mkdir build && cd build // buildディレクトリをつくって移動
 $ touch sample.c
@@ -346,13 +338,15 @@ $ vi sample.c  // またはエディタで開く
 
 
 ▼sample.c
+
 ```c
 int c=0;
 int count(){return c++;}
 ```
 
 このあと、以下を1行ずつ順番に実行してください
-```
+
+```bash
 $ clang -emit-llvm --target=wasm32 -S sample.c
 $ llc sample.ll -march=wasm32
 $ s2wasm sample.s > sample.wast

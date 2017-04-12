@@ -48,8 +48,8 @@ function asm(stdin, foreign, heap){ //引数は最大3つ
   // use asm宣言により,JavaScriptインタプリタはこのfunctionをasm.jsコードと解釈し, 事前コンパイルを試みます
   "use asm";
   // インポート宣言
-		var imul = stdin.Math.imul;
-		var callOuter = foreign.callOuter;
+  var imul = stdin.Math.imul;
+  var callOuter = foreign.callOuter;
   // 共有変数宣言
   var a = 0;
   // 関数定義
